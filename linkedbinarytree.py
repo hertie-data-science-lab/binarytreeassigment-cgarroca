@@ -2,7 +2,7 @@
 """
 Created on Tue Mar 28 15:15:46 2023
 
-@author: Hannah
+@author: Jorge Roa & Carmen Garro
 """
 
 from binarytree import BinaryTree
@@ -192,5 +192,50 @@ class LinkedBinaryTree(BinaryTree):
             node._right = t2.root
             t2._root = None
             t2._size = 0
-            
+
+#### 1: function of preorder
+    def preorder(self, p):
+        #check if empty
+        if not self.is_empty():
+            #if the node is a leaf
+            for p in self._subtree_preorder(self.root()):
+                yield p
+
+    def _subtree_preorder(self, p):
+        # visit the root first
+        yield p
+        #visit children
+        for c in self.children(p):
+            for other in self._subtree_preorder(c):
+                yield other
+
+#### 2: function of postorder
+    def postorder(self):
+        if not self.is_empty():
+            for p in self._subtree_postorder(self.root()):
+                yield p
+
+    def _subtree_postorder(self, p):
+        for c in self.children(p):
+            for other in self._subtree_postorder(c):
+                yield other
+        yield p
+
+#### 3: function of inorder
+    def inorder(self):
+        if not self.is_empty():
+            for p in self._subtree_inorder(self.root()):
+                yield p
+
+    def _subtree_inorder(self, p):
+        if self.left(p) is not None:
+            for other in self._subtree_inorder(self.left(p)):
+                yield other
+        yield p
+        if self.right(p) is not None:
+            for other in self._subtree_inorder(self.right(p)):
+                yield other
+
+
+
 
