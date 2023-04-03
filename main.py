@@ -32,7 +32,7 @@ print(lbt.height(lbt.root()))
 
 print("##Preorder##")
 #Should be: 1,2,4,5,3,6,7
-for p in lbt.preorder(0):
+for p in lbt.preorder():
     print(p.element())
 
 print("##Postorder##")
@@ -41,6 +41,6 @@ for p in lbt.postorder():
     print(p.element())
 
 print("##Inorder##")
-#Should be: 4,2,5,1,6,3,7
+#Should be:
 for p in lbt.inorder():
     print(p.element())

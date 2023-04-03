@@ -10,6 +10,7 @@ from binarytree import BinaryTree
 class LinkedBinaryTree(BinaryTree):
     """Linked representation of a binary tree structure."""
 
+
     class _Node:
         __slots__ = '_element', '_parent', '_left', '_right'
 
@@ -19,7 +20,7 @@ class LinkedBinaryTree(BinaryTree):
             self._left = left
             self._right = right
 
-    
+
     class Position(BinaryTree.Position):
         """An abstraction representing the location of a single element."""
 
@@ -31,7 +32,7 @@ class LinkedBinaryTree(BinaryTree):
         def element(self):
             return self._node._element
 
-        
+
         def __eq__(self, other):
             return type(other) is type(self) and other._node is self._node
 
@@ -58,7 +59,7 @@ class LinkedBinaryTree(BinaryTree):
         self._root = None
         self._size = 0
         self._positions = []
-    
+
 
     def __len__(self):
         """Return the total number of elements in the tree."""
@@ -71,7 +72,7 @@ class LinkedBinaryTree(BinaryTree):
     @property
     def positions(self):
         return self._positions
-    
+
     def parent(self, p):
         """Return the Position of p's parent(or None if p is root)."""
         node = self._validate(p)
@@ -113,7 +114,7 @@ class LinkedBinaryTree(BinaryTree):
 
     def _add_left(self, p, e):
         """Create a new left child for Position p, storing element e.
-        
+
         Return the Position of new node
         Raise ValueError if Position p is invalidor p already has a left child.
         """
@@ -124,11 +125,11 @@ class LinkedBinaryTree(BinaryTree):
         node._left = self._Node(e, node)
         pos = self._make_position(node._left)
         self._positions.append(pos)
-        return pos 
+        return pos
 
     def _add_right(self, p, e):
         """Create a new right child for Position p, storing element e.
-        
+
         Return the Position of new node
         Raise ValueError if Position p is invalid or p already has a right child.
         """
@@ -169,7 +170,7 @@ class LinkedBinaryTree(BinaryTree):
                 parent._left = child
             else:
                 parent._right = child
-        
+
         self._positions.remove(p)
         self._size -= 1
         node._parent = node
@@ -193,49 +194,50 @@ class LinkedBinaryTree(BinaryTree):
             t2._root = None
             t2._size = 0
 
-#### 1: function of preorder
-    def preorder(self, p):
-        #check if empty
+    #### 1: function of preorder
+    """Generate a preorder traversal of positions in the tree"""
+    def preorder(self):
         if not self.is_empty():
-            #if the node is a leaf
             for p in self._subtree_preorder(self.root()):
                 yield p
 
+    """Generate a preorder traversal of positions in the subtree rooted at p"""
     def _subtree_preorder(self, p):
-        # visit the root first
-        yield p
-        #visit children
-        for c in self.children(p):
+        yield p #visit the parent
+        for c in self.children(p): #visit children
             for other in self._subtree_preorder(c):
                 yield other
 
-#### 2: function of postorder
+    #### 2: function of postorder
+    """Generate a postorder traversal of positions in the tree"""
     def postorder(self):
         if not self.is_empty():
             for p in self._subtree_postorder(self.root()):
                 yield p
 
+    """Generate a postorder traversal of positions in the subtree rooted at p"""
     def _subtree_postorder(self, p):
         for c in self.children(p):
             for other in self._subtree_postorder(c):
                 yield other
         yield p
 
-#### 3: function of inorder
+    #### 3: function of inorder
+    """Generate an inorder traversal of positions in the tree"""
     def inorder(self):
         if not self.is_empty():
             for p in self._subtree_inorder(self.root()):
                 yield p
 
+    """Generate an inorder traversal of positions in the subtree rooted at p"""
     def _subtree_inorder(self, p):
-        if self.left(p) is not None:
+        if self.left(p) is not None: #visit subtree if it exists
             for other in self._subtree_inorder(self.left(p)):
                 yield other
-        yield p
-        if self.right(p) is not None:
+        yield p #print the parent
+        if self.right(p) is not None: #visit right subtree, if it exists
             for other in self._subtree_inorder(self.right(p)):
                 yield other
-
 
 
 
